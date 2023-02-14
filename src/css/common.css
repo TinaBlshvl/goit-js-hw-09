@@ -17,6 +17,10 @@ img {
   max-width: 100%;
 }
 
+
+
+/* !-----------------1---------------- */
+
 .btn {
   margin: 10px;
   padding: 20px 30px;
@@ -43,4 +47,30 @@ img {
 
 .btn-container {
   text-align: center;
+}
+
+
+
+
+/* !-----------------2---------------- */
+
+.value {
+  font-size: 35px;
+}
+
+.label {
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+.timer {
+  display: flex;
+  gap: 30px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

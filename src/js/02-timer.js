@@ -1,30 +1,20 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
 
 const input = document.getElementById("datetime-picker");
 
-const days = document.querySelector(span[data-days]);
-const hours = document.querySelector(span[data-hours]);
-const minutes = document.querySelector(span[data-minutes]);
-const seconds = document.querySelector(span[data - seconds]);
-const button = document.querySelector(span[data - start]);
+const daysEl = document.querySelector("span[data-days]");
+const hoursEl = document.querySelector("span[data-hours]");
+const minutesEl = document.querySelector("span[data-minutes]");
+const secondsEl = document.querySelector("span[data-seconds]");
+const buttonEl = document.querySelector("button[data-start]");
 
-button.addEventListener("click", startWorkingTime)
+buttonEl.disabled = true;
 
 let intervalId = null;
 let selectedDate = null;
 let ms = null;
-
-function startWorkingTime() {
-  intervalId = setInterval(convertMs, 1000);
-  button.disabled = true;
-}
-
-function addZero(number) {
-    return String(number).padStart(2, 0)
-}
-
-flatpickr(input, options)
 
 const options = {
         enableTime: true,
@@ -32,23 +22,22 @@ const options = {
         defaultDate: new Date(),
         minuteIncrement: 1,
         onClose(selectedDates) {
-            console.log(selectedDates[0]);
+            selectedDate = selectedDates[0];
+          ms = selectedDate - options.defaultDate;
+
+          if (ms < 0) {
+            Notiflix.Notify.warning("Please choose a date in the future");
+          } else {
+            buttonEl.disabled = false;
+          }
+          return;
         },
   dateFormat: "Y-m-d H:i",
-        
-  onClose(selectedDates) {
-    selectedDate = selectedDates[0];
-    ms = selectedDate - options.defaultDate;
-
-    if (ms < 0) {
-      window.alert("Please choose a date in the future")
-    } else {
-      button.disabled = false;
-    }
-    return;
-  }
-
 };
+
+flatpickr(input, options)
+
+buttonEl.addEventListener("click", startWorkingTime)
 
 function convertMs(ms) {
   ms = selectedDate - Date.now();
@@ -58,12 +47,27 @@ function convertMs(ms) {
   const hour = minute * 60;
   const day = hour * 24;
 
-  const days = addZero(Math.floor(ms / day));
-  const hours = addZero(Math.floor((ms % day) / hour));
-  const minutes = addZero(Math.floor(((ms % day) % hour) / minute));
-  const seconds = addZero(Math.floor((((ms % day) % hour) % minute) / second));
+  daysEl.textContent = addZero(Math.floor(ms / day));
+  hoursEl.textContent = addZero(Math.floor((ms % day) / hour));
+  minutesEl.textContent = addZero(Math.floor(((ms % day) % hour) / minute));
+  secondsEl.textContent = addZero(Math.floor((((ms % day) % hour) % minute) / second));
 
-  return { days, hours, minutes, seconds };
+  if (ms < 1000) {
+    input.disabled = false;
+    clearInterval(intervalId);
+  }
+}
+
+function startWorkingTime() {
+  intervalId = setInterval(convertMs, 1000);
+  buttonEl.disabled = true;
+  input.disabled = true;
+
+  console.log(intervalId);
+}
+
+function addZero(number) {
+    return String(number).padStart(2, 0)
 }
 
 console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}

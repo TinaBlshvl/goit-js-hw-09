@@ -62,17 +62,13 @@ function startWorkingTime() {
   intervalId = setInterval(convertMs, 1000);
   buttonEl.disabled = true;
   input.disabled = true;
-
-  console.log(intervalId);
 }
 
 function addZero(number) {
     return String(number).padStart(2, 0)
 }
 
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
+
 
 
 

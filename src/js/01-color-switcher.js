@@ -2,6 +2,8 @@ const startBtn = document.getElementById("btn-start");
 const stopBtn = document.getElementById("btn-stop");
 const body = document.querySelector("body");
 
+stopBtn.disabled = true;
+
 let intervalId = null;
 
 startBtn.addEventListener("click", handleStart)
@@ -25,7 +27,7 @@ function handleStart() {
 function handleStop() {
     stopBtn.disabled = true;
     startBtn.disabled = false;
-    clearInterval(bodyColor)
+    clearInterval(intervalId)
     alert("The game has been stopped!")
 }
 
